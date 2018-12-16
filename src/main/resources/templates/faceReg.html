@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>jQuery半透明注册表单 - 站长素材</title>
+		<meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		<link rel="stylesheet" href="/reg_assets/css/demo.css">
+		<link rel="stylesheet" href="/reg_assets/css/sky-forms.css">
+		<script src="/reg_assets/js/jquery-1.9.1.min.js"></script>
+		<script src="/reg_assets/js/jquery.validate.min.js"></script>
+	</head>
+	
+	<body class="bg-cyan">
+		<div class="body body-s">		
+			<div  class="sky-form">
+				<header>人脸注册</header>
+				<fieldset>					
+					<section>
+						<label class="input">
+							<i class="icon-append icon-envelope-alt"></i>
+							<input type="file" name="imageFile" placeholder="imageFile" id="imageFile" oninput = "fileChanged(this)">
+							<img alt="" id = "file_img" src="">
+						</label>
+					</section>
+				</fieldset>
+				<footer>
+					<button onclick="face_reg()" class="button">Submit</button>
+				</footer>
+			</div>			
+		</div>
+		
+		<script type="text/javascript">
+		function face_reg(){
+			var imageFile = $("#imageFile").val();
+			if (imageFile != "") {
+				var formData = new FormData();  
+				formData.append('file',$("#imageFile")[0].files[0]);
+				$.ajax({
+					type: "POST",
+			        enctype: 'multipart/form-data',
+					url : "/face/reg/file",
+					data : formData,
+					processData: false,  
+		            contentType: false ,
+		            dataType : "json",
+					success : function(res) {
+						alert("success");
+					},
+					error : function() {
+						alert("error");
+					}
+				})
+			} 
+		}
+	var reader = new FileReader();
+	function fileChanged(file){
+		var face_file = document.getElementById('file_img');
+		reader.onload = function(evt){
+			face_file.width  =  "100";
+			face_file.height =  "100";
+			face_file.src = evt.target.result;
+		}
+		reader.readAsDataURL(file.files[0]);
+	}
+		</script>
+	</body>
+</html>

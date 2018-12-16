@@ -1,0 +1,3 @@
+项目内容：
+	通过HTTP向Django接口传输文件流
+	SpringBoot项目，访问地址为localhost:8080/faceReg
