@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONObject;
+
 import sun.misc.BASE64Encoder;
 
 /**
@@ -38,7 +40,7 @@ public class FaceController {
 
 	@ResponseBody
 	@RequestMapping(value = "/face/reg/file", headers = "content-type=multipart/*", method = RequestMethod.POST)
-	public void FaceRegFile(@RequestParam("file") MultipartFile file) throws Exception{
+	public String FaceRegFile(@RequestParam("file") MultipartFile file) throws Exception{
 		// 转二进制
 		byte[] bytes = null;
 		try {
@@ -78,13 +80,15 @@ public class FaceController {
             }
             //接收响应流
          inputStream = httpURLConnection.getInputStream();
-            inputStreamReader = new InputStreamReader(inputStream);
-            reader = new BufferedReader(inputStreamReader);
-            
-            while ((tempLine = reader.readLine()) != null) {
-                resultBuffer.append(tempLine);
-            }
-            
+         inputStreamReader = new InputStreamReader(inputStream);
+         reader = new BufferedReader(inputStreamReader);
+         while ((tempLine = reader.readLine()) != null) {
+             resultBuffer.append(tempLine);
+         }
+         System.out.println(resultBuffer.toString());
+         JSONObject object = new JSONObject();
+         object.put("result", resultBuffer.toString());
+         return object.toJSONString();
         } finally {
             
             if (outputStreamWriter != null) {
@@ -106,9 +110,9 @@ public class FaceController {
             if (inputStream != null) {
                 inputStream.close();
             }
-            
+           
         }
-
+        
 	}
 	
 	@ResponseBody
